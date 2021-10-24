@@ -1,32 +1,28 @@
 import express from 'express';
-import {main} from './index.js';
+import {main, reloadPage} from './index.js';
 import fs from 'fs';
-
+import shell from 'shelljs';
+import schedule from 'node-schedule';
 
 const app = express();
-
 const PORT = 5000;
 
-// console.log(main);
+app.get('/fetch', async (req, res) => {
+    let result = await main();;
+    // await res.send(result);
 
-app.get('/', async (req, res) => {
-    let result = await main();
-    await res.send(result);
-    // await res.send('logged in ');
+    schedule.scheduleJob('1 * * * *', async () => {
+        console.log('after 1 min..');
+        result = await main();
+    })
 
-
-/*     await fs.writeFile('./myfile.txt', 'Content to write', { flag: 'w' }, function(err) {
-        if (err) 
-            return console.error(err); 
-        fs.readFile('./myfile.txt', 'utf-8', function (err, data) {
-            if (err)
-                return console.error(err);
-            console.log(data);
-        });
+    let html = result.map((elem) => {
+        return `<li>${elem.hrefText}</li>`;
     });
- */
 
-    const content = 'Some content!'
+
+    res.send(`<button onclick='window.location.reload()'>Fetch Data</button> <br/><br/> <ul>${html}</ul>`);
+
     
     fs.writeFile('test1.txt', JSON.stringify(result), err => {
       if (err) {
@@ -35,21 +31,19 @@ app.get('/', async (req, res) => {
       }
       //file written successfully
     })
-    
 
-
-/*     const content = 'Some content!'
-
-    try {
-      const data = fs.writeFileSync('D:/Workspace/Projects/test1/test1.txt', content)
-      //file written successfully
-    } catch (err) {
-      console.error(err)
-    }
-     */
 
 });
 
+app.get('/stop', async () => {
+    process.exit(1);
+})
+
+app.get('/start', async () => {
+    shell.exec('node server.js');
+})
+
 app.listen(PORT, () => {
     console.log('listening on ', PORT);
+    console.log('run...');
 });
