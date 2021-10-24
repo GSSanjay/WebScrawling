@@ -1,8 +1,5 @@
 import express from 'express';
-import {main} from './index.js';
-import fs from 'fs';
 import shell from 'shelljs';
-import schedule from 'node-schedule';
 
 const app = express();
 const PORT = 5001;
