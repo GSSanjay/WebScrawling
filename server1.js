@@ -1,5 +1,5 @@
 import express from 'express';
-import {main, reloadPage} from './index.js';
+import {main} from './index.js';
 import fs from 'fs';
 import shell from 'shelljs';
 import schedule from 'node-schedule';
@@ -8,9 +8,7 @@ const app = express();
 const PORT = 5001;
 
 app.get('/', (req, res) => {
-    // res.send(`Main server is running on .....${PORT}`,)
-
-    res.send(`<button onclick='window.location.href="http://localhost:5001/stop"'>Stop</button> <button onclick='window.location.href="http://localhost:5001/start"'>Start</button>`);
+    res.send(`Server1 is running on ${PORT} <br/> <button onclick='window.location.href="http://localhost:5001/stop"'>Stop</button> <button onclick='window.location.href="http://localhost:5001/start"'>Start</button>`);
 })
 
 app.get('/stop', async (req, res) => {
@@ -25,6 +23,5 @@ app.get('/start', async (req, res) => {
 })
 
 app.listen(PORT, () => {
-    console.log('listening on ', PORT);
-    console.log('run...');
+    console.log('Server 1 is listening on ', PORT);
 });

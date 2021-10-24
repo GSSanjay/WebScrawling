@@ -1,6 +1,4 @@
 import puppeteer from 'puppeteer';
-import shell from 'shelljs';
-
 
 let result = [];
 
@@ -52,20 +50,4 @@ export async function main() {
 
     // console.log(result);
     return result;
-    
 }
-
-export async function reloadPage() {
-  // await page.goBack();
-  // await page.goForward();
-  shell.exec('pm2 stop server.js');
-  shell.exec('node server.js');
-}
-
-// main();
-
-/* let btnFetch = document.querySelector('#btnFetch');
-
-btnFetch.addEventListener('click', () => {
-    main();
-}) */
